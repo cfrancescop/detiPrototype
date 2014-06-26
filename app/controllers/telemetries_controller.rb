@@ -34,7 +34,7 @@ before_filter :signed_in_and_redirect
       
       directory = "#{@db.path}/input"
       path = File.join(directory, name)
-      puts "file:#{directory}\#{name}\n"
+      puts "file:#{directory}/#{name}\n"
       File.open(path, "wb") { |f| f.write(file.read) }
     end
     flash[:notice] = "File uploaded"
@@ -68,12 +68,12 @@ before_filter :signed_in_and_redirect
   #GET databases/:database_id/uploaded
   # => return the list of telemetries files uploaded for the selected database but not yet processed merged/splitted
   def uploaded
-    db = Database.find(params[:database_id])
-    @files = Dir.entries("#{db.path}/input")
+    @db = Database.find(params[:database_id])
+    @files = Dir.entries("#{@db.path}/input")
     @files.delete_if{|f| !f.include?'.good'}
     @results = []
     @files.each do |entry|
-      @results << {:name=>entry,:version=>db.version}
+      @results << {:name=>entry,:version=>@db.version,:size=>"#{File.size( "#{@db.path}/input/#{entry}")}KB"}
     end
     respond_to do |format|
       format.html
@@ -249,6 +249,7 @@ before_filter :signed_in_and_redirect
         format.json { render json: @telemetry.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # DELETE /telemetries/1
@@ -263,4 +264,5 @@ before_filter :signed_in_and_redirect
       format.json { head :no_content }
     end
   end
+
 end
