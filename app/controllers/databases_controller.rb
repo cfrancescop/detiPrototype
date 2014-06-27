@@ -86,6 +86,7 @@ class DatabasesController < ApplicationController
     if !Dir.exists? path then
       Dir.mkdir path
       Dir.mkdir path+"/input"
+      Dir.mkdir path+"/processed"
     end
     respond_to do |format|
       if @database.save
