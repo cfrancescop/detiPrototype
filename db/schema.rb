@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140611145657) do
+ActiveRecord::Schema.define(:version => 20140617103136) do
 
   create_table "databases", :force => true do |t|
     t.string   "version"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20140611145657) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.boolean  "finalized"
+    t.integer  "pid"
   end
 
   create_table "telemetries", :force => true do |t|

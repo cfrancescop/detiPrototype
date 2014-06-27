@@ -72,9 +72,13 @@ before_filter :signed_in_and_redirect
     @files = Dir.entries("#{@db.path}/input")
     @files.delete_if{|f| !f.include?'.good'}
     @results = []
+
     @files.each do |entry|
-      @results << {:name=>entry,:version=>@db.version,:size=>"#{File.size( "#{@db.path}/input/#{entry}")}KB"}
+      @size = File.size( "#{@db.path}/input/#{entry}")
+      @size = @size < 1024*1024 ? "#{@size/1024}KB" : "#{@size/(1024*1024)}MB"
+      @results << {:name=>entry,:version=>@db.version,:size=>"#{@size}"}
     end
+
     respond_to do |format|
       format.html
       format.json { render json: @results }
