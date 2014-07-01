@@ -9,6 +9,7 @@ before_filter :signed_in_and_redirect
       name = file.original_filename
       
       directory = "#{@db.path}"
+      if !Dir.exists? directory then Dir.mkdir directory end
       path = File.join(directory, name)
       puts "file:#{directory}\#{name}\n"
       File.open(path, "wb") { |f| f.write(file.read) }
